@@ -22,8 +22,8 @@ public class CustomerRewardServiceImpl implements CustomerRewardServiceInt {
 
 	@Override
 	public RewardResponse processTransaction(Customer customer) {
-		System.out.println(customer.getCustomerName());
-		System.out.println(customer.getRewards());
+		
+		
 		
 		int totalRewardPoints = 0;
 		rewardResponse.setCustomerId(customer.getCustomerId());
