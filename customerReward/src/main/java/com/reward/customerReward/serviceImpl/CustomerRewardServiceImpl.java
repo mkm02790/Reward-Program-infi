@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.reward.customerReward.controller.CustomerRewardController;
 import com.reward.customerReward.entity.Customer;
 import com.reward.customerReward.entity.RewardResponse;
 import com.reward.customerReward.service.CustomerRewardServiceInt;
@@ -19,17 +21,18 @@ public class CustomerRewardServiceImpl implements CustomerRewardServiceInt {
 
 	@Autowired
 	RewardResponse rewardResponse;
+	
+	private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CustomerRewardController.class);
 
 	@Override
 	public RewardResponse processTransaction(Customer customer) {
-		
-		
-		
+
 		int totalRewardPoints = 0;
 		rewardResponse.setCustomerId(customer.getCustomerId());
 		rewardResponse.setCustomerName(customer.getCustomerName());
+		logger.info("Starting Excution of calculateRewardsPoints of CustomerRewardServiceImpl");
 		Map<String, Integer> monthsWiseRewardPoints = calculateRewardsPoints(customer.getRewards());
-		System.out.println(monthsWiseRewardPoints);
+		logger.info("Complete Excution of calculateRewardsPoints of CustomerRewardServiceImpl");
 		rewardResponse.setRewardMonthwise(monthsWiseRewardPoints);
 
 		for (int points : monthsWiseRewardPoints.values()) {
@@ -46,10 +49,11 @@ public class CustomerRewardServiceImpl implements CustomerRewardServiceInt {
 		int firstMonthRewardAmount = rewards.getOrDefault("firstMonth", 0);
 		int secondMonthRewardAmount = rewards.getOrDefault("secondMonth", 0);
 		int thirdMonthRewardAmount = rewards.getOrDefault("thirdMonth", 0);
-
+		logger.info("Starting Excution of transaction of CustomerRewardServiceImpl");
 		int firstMonthRewardPoints = transaction(firstMonthRewardAmount);
 		int secondMonthRewardPoints = transaction(secondMonthRewardAmount);
 		int thirdMonthRewardPoints = transaction(thirdMonthRewardAmount);
+		logger.info("Complete Excution of transaction of CustomerRewardServiceImpl");
 
 		pointsRecord.put(FIRSTMONTH, firstMonthRewardPoints);
 		pointsRecord.put(SECONDMONTH, secondMonthRewardPoints);
